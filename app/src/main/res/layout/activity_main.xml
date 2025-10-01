@@ -5,32 +5,66 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!--이름-->
-        <TextView
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <EditText
+            android:id="@+id/inputTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/name"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textSize="24sp"/>
-        <!--학번-->
-        <TextView
+            android:gravity="center"
+            android:hint="초 단위 입력"
+            android:inputType="number"
+            android:textSize="30sp" />
+
+        <Chronometer
+            android:id="@+id/chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/col_num"
-            android:layout_marginTop="40dp"
-            />
-        <!--전화번호-->
-        <TextView
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="32sp"
+            android:layout_marginTop="20dp" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/phone_num"
-            />
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="시작"
+                android:enabled="true"
+                android:layout_marginStart="10dp"/>
+
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일시정지"
+                android:enabled="false"
+                android:layout_marginStart="10dp"/>
+
+            <Button
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="초기화"
+                android:enabled="false"
+                android:layout_marginStart="10dp"/>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 

@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
 
     var pauseTime = 0L
 
-    var binding = ActivityMainBinding.inflate(layoutInflater)
+   lateinit  var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
 

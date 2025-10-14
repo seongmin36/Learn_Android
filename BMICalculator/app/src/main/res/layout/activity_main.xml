@@ -10,9 +10,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="20dp"
+        >
 
         <!--제목-->
         <TextView
@@ -54,13 +55,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            >
 
-            <!--            예시 키-->
+            <!--예시 키-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="당신의 키 (cm)" />
+                android:text="당신의 키(cm)" />
             <!--예시 cm-->
             <TextView
                 android:layout_width="wrap_content"
@@ -73,12 +76,67 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:orientation="horizontal">
 
             <!--플러스 버튼-->
             <Button
-                android:id="@+id/btn_plus"
+                android:id="@+id/btn_plus_cm"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:text="@string/plus"
+                android:textSize="25sp"
+                />
+
+            <!--키 인풋-->
+            <EditText
+                android:id="@+id/input_cm"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/edittext_border" />
+
+            <!--마이너스 버튼-->
+            <Button
+                android:id="@+id/btn_minus_cm"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:text="@string/minus"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="12dp"
+            >
+
+            <!--예시 키-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="당신의 체중(Kg)" />
+            <!--예시 cm-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="80dp"
+                android:text="예) 80" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!--플러스 버튼-->
+            <Button
+                android:id="@+id/btn_plus_kg"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:text="@string/plus"
@@ -86,24 +144,46 @@
 
             <!--키 인풋-->
             <EditText
-                android:id="@+id/input_cm"
-                android:layout_width="0dp"
+                android:id="@+id/input_kg"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_weight="1"
-                android:background="@drawable/edittext_border"
-                android:paddingHorizontal="80dp" />
+                android:background="@drawable/edittext_border"/>
 
             <!--마이너스 버튼-->
             <Button
-                android:id="@+id/btn_minus"
+                android:id="@+id/btn_minus_kg"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:text="@string/minus"
                 android:textSize="25sp" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/bmi_calc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BMI 계산하기"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            />
+
+        <TextView
+            android:id="@+id/bmi_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/bmi_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/bmi_ex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

@@ -8,30 +8,17 @@
     android:gravity="center_horizontal">
 
     <TextView
-        android:id="@+id/voteText"
+        android:id="@+id/voteTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="* 투표 결과" />
 
     <TextView
-        android:id="@+id/dogResult"
+        android:id="@+id/voteResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         />
-    <TextView
-        android:id="@+id/catResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        />
-    <TextView
-        android:id="@+id/rabbitResut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        />
-
 
     <Button
         android:id="@+id/voteBackBtn"

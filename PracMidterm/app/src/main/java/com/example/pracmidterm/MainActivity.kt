@@ -22,5 +22,9 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, Chat1Activity::class.java)
             startActivity(intent)
         }
+
+        binding.endBtn.setOnClickListener {
+            finishAffinity()
+        }
     }
 }

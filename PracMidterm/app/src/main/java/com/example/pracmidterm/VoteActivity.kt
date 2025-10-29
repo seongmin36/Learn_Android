@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pracmidterm.databinding.ActivityVoteBinding
+import com.example.pracmidterm.utils.VoteUtils
 
 class VoteActivity: AppCompatActivity() {
     private lateinit var binding : ActivityVoteBinding
@@ -25,6 +26,9 @@ class VoteActivity: AppCompatActivity() {
 
         binding.resultBtn.setOnClickListener {
             val intent = Intent(this, VoteResultActivity::class.java)
+            intent.putExtra("dogCnt", dogCnt)
+            intent.putExtra("catCnt", catCnt)
+            intent.putExtra("rabbitCnt", rabbitCnt)
 
             startActivity(intent)
         }
@@ -46,16 +50,6 @@ class VoteActivity: AppCompatActivity() {
                 return
             }
         }
-        val result = buildString {
-            if(dogCnt > 0) append("Dog: ${dogCnt}표\n")
-            if(catCnt > 0) append("Cat: ${catCnt}표\n")
-            if(rabbitCnt > 0) append("Rabbit: ${rabbitCnt}표\n")
-        }
-
-        binding.voteView.text = if (result.isEmpty()) {
-            "아직 투표 결과가 없습니다."
-        } else {
-            result.trim()
-        }
+        binding.voteView.text= VoteUtils.resultVote(dogCnt, catCnt, rabbitCnt)
     }
 }

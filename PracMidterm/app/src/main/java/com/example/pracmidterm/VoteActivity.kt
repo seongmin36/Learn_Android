@@ -42,16 +42,20 @@ class VoteActivity: AppCompatActivity() {
                 rabbitCnt++
             }
             else -> {
-                Toast.makeText(this, "먼저 동물을 선택하세요", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "먼저 동물을 선택하세요", Toast.LENGTH_SHORT).show()
                 return
             }
         }
         val result = buildString {
             if(dogCnt > 0) append("Dog: ${dogCnt}표\n")
-            if(catCnt > 0) append("Dog: ${catCnt}표\n")
-            if(rabbitCnt > 0) append("Dog: ${rabbitCnt}표\n")
+            if(catCnt > 0) append("Cat: ${catCnt}표\n")
+            if(rabbitCnt > 0) append("Rabbit: ${rabbitCnt}표\n")
         }
 
-        binding.voteText
+        binding.voteView.text = if (result.isEmpty()) {
+            "아직 투표 결과가 없습니다."
+        } else {
+            result.trim()
+        }
     }
 }

@@ -1,8 +1,6 @@
 package com.example.bmicalculator.utils
 
 import android.widget.EditText
-import kotlin.compareTo
-
 object BMIUtils {
     // BMI 계산 함수
     fun calculateBMI(weight: EditText, height: EditText): Double {

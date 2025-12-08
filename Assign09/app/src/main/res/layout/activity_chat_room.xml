@@ -2,18 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".ChatRoomActivity"
     android:paddingTop="90dp">
 
-    <!-- 뒤로가기 버튼 -->
+    <!-- 상단 뒤로가기 버튼 -->
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
         app:srcCompat="?attr/actionModeCloseDrawable"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <!-- 방 제목 -->
     <TextView
@@ -21,79 +24,73 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="방제목"
-        android:textSize="24sp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@id/btnBack"
         app:layout_constraintTop_toTopOf="@id/btnBack"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="center_vertical"/>
 
     <!-- 메시지 목록 -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMsgs"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="8dp"
-        app:layout_constraintTop_toBottomOf="@id/btnBack"
-        app:layout_constraintBottom_toTopOf="@+id/messageInputLayout"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnBack"
+        app:layout_constraintBottom_toTopOf="@+id/editMsg"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- 메시지 입력 영역 전체 -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/messageInputLayout"
+
+    <!-- 메시지 입력창 -->
+    <EditText
+        android:id="@+id/editMsg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:hint="메시지를 입력하세요"
+        android:padding="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toStartOf="@+id/btnSend"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- 텍스트 입력 -->
-        <EditText
-            android:id="@+id/editMsg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="메시지 입력"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnImage" />
 
-        <!-- 이미지 업로드 버튼 -->
-        <ImageButton
-            android:id="@+id/btnImage"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:padding="4dp"
-            android:src="@android:drawable/ic_menu_gallery"
-            app:layout_constraintStart_toEndOf="@id/editMsg"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnFile"/>
+    <!-- 이미지 업로드 버튼 -->
+    <ImageButton
+        android:id="@+id/btnImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:padding="4dp"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:layout_constraintEnd_toStartOf="@+id/btnFile"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <!-- 파일 업로드 버튼 -->
-        <ImageButton
-            android:id="@+id/btnFile"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:padding="4dp"
-            android:src="@android:drawable/ic_menu_upload"
-            app:layout_constraintStart_toEndOf="@id/btnImage"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnSend"/>
 
-        <!-- 메시지 전송 버튼 -->
-        <ImageButton
-            android:id="@+id/btnSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_send"
-            app:layout_constraintStart_toEndOf="@id/btnFile"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 파일 업로드 버튼 -->
+    <ImageButton
+        android:id="@+id/btnFile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:padding="4dp"
+        android:src="@android:drawable/ic_menu_upload"
+        app:layout_constraintEnd_toStartOf="@+id/btnSend"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <!-- 메시지 전송 버튼 -->
+    <ImageButton
+        android:id="@+id/btnSend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_send"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

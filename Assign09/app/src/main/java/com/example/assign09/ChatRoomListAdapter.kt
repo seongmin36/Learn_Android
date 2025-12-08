@@ -2,47 +2,38 @@ package com.example.assign09
 
 import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.assign09.databinding.ItemRoomBinding
 import com.example.assign09.model.Room
 
-class ChatRoomListAdapter(val roomList: MutableList<Room>)
+class ChatRoomListAdapter(private val rooms: List<Room>)
     : RecyclerView.Adapter<ChatRoomListAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_room, parent, false)
-        return Holder(view)
+        val binding = ItemRoomBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return Holder(binding)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(roomList[position])
+        holder.bind(rooms[position])
     }
 
-    override fun getItemCount(): Int = roomList.size
+    override fun getItemCount() = rooms.size
 
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        val textTitle = itemView.findViewById<TextView>(R.id.textRoomTitle)
-        val textCount = itemView.findViewById<TextView>(R.id.textMsgCount)
-
-        lateinit var mRoom: Room
-
-        init {
-            itemView.setOnClickListener {
-                val intent = Intent(itemView.context, ChatRoomActivity::class.java)
-                intent.putExtra("roomId", mRoom.id)
-                intent.putExtra("roomTitle", mRoom.title)
-                itemView.context.startActivity(intent)
-            }
-        }
+    inner class Holder(private val binding: ItemRoomBinding)
+        : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(room: Room) {
-            mRoom = room
-            textTitle.text = room.title
-            textCount.text = room.messageCount.toString()
+            binding.textRoomTitle.text = room.title
+            binding.textMsgCount.text = room.messageCount.toString()
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, ChatRoomActivity::class.java)
+                intent.putExtra("roomId", room.id)
+                intent.putExtra("roomTitle", room.title)
+                itemView.context.startActivity(intent)
+            }
         }
     }
 }

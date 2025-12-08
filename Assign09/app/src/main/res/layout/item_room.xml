@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- 방 제목 -->
     <TextView
         android:id="@+id/textRoomTitle"
         android:layout_width="0dp"
@@ -18,13 +19,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <!-- 메세지 개수 -->
     <TextView
         android:id="@+id/textMsgCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0"
-        android:textSize="16sp"
         android:textColor="@android:color/holo_blue_dark"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textRoomTitle"
         app:layout_constraintBottom_toBottomOf="@+id/textRoomTitle"/>

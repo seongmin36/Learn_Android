@@ -4,72 +4,75 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.google.firebase.database.FirebaseDatabase
 import com.example.assign09.databinding.ActivityMainBinding
 import com.example.assign09.model.User
+import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
 
-    val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    val database = FirebaseDatabase.getInstance("https://fir-chat1204-default-rtdb.firebaseio.com/")
-    val usersRef = database.getReference("users")
+    private lateinit var binding: ActivityMainBinding
+    private val database = FirebaseDatabase.getInstance("https://fir-chat1204-default-rtdb.firebaseio.com/")
+    private val usersRef = database.getReference("users")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btnSignin.setOnClickListener { signin() }
-        binding.btnSignup.setOnClickListener { signup() }
+        with(binding) {
+            btnSignin.setOnClickListener { signin() }
+            btnSignup.setOnClickListener { signup() }
+        }
     }
 
-    fun signup() {
-        val id = binding.editId.text.toString()
-        val password = binding.editPassword.text.toString()
-        val name = binding.editName.text.toString()
+    private fun signup() = with(binding) {
+        val id = editId.text.toString()
+        val pw = editPassword.text.toString()
+        val name = editName.text.toString()
 
-        if (id.isEmpty() || password.isEmpty() || name.isEmpty()) {
-            Toast.makeText(this, "아이디, 비밀번호, 별명을 모두 입력해야 합니다.", Toast.LENGTH_LONG).show()
-            return
+        if (id.isEmpty() || pw.isEmpty() || name.isEmpty()) {
+            Toast.makeText(this@MainActivity, "모든 항목을 입력하세요.", Toast.LENGTH_SHORT).show()
+            return@with
         }
 
         usersRef.child(id).get().addOnSuccessListener {
             if (it.exists()) {
-                Toast.makeText(this, "아이디가 존재합니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "아이디가 존재합니다.", Toast.LENGTH_SHORT).show()
             } else {
-                val user = User(id, password, name)
-                usersRef.child(id).setValue(user)
+                usersRef.child(id).setValue(User(id, pw, name))
                 signin()
             }
         }
     }
 
-    fun signin() {
-        val id = binding.editId.text.toString()
-        val password = binding.editPassword.text.toString()
+    private fun signin() = with(binding) {
+        val id = editId.text.toString()
+        val pw = editPassword.text.toString()
 
-        if (id.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "아이디와 비밀번호를 입력해야 합니다.", Toast.LENGTH_LONG).show()
-            return
+        if (id.isEmpty() || pw.isEmpty()) {
+            Toast.makeText(this@MainActivity, "아이디/비밀번호 입력", Toast.LENGTH_SHORT).show()
+            return@with
         }
 
-        usersRef.child(id).get().addOnSuccessListener {
-            if (it.exists()) {
-                val user = it.getValue(User::class.java)
-                if (user != null && user.password == password) {
-                    goChatroomList(user.id, user.name)
-                } else {
-                    Toast.makeText(this, "비밀번호가 잘못되었습니다.", Toast.LENGTH_LONG).show()
-                }
+        usersRef.child(id).get().addOnSuccessListener { snap ->
+            if (!snap.exists()) {
+                Toast.makeText(this@MainActivity, "아이디 없음", Toast.LENGTH_SHORT).show()
+                return@addOnSuccessListener
+            }
+
+            val user = snap.getValue(User::class.java)!!
+            if (user.password == pw) {
+                goChatList(user.id, user.name)
             } else {
-                Toast.makeText(this, "아이디가 존재하지 않습니다.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "비밀번호 오류", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    fun goChatroomList(userId: String, userName: String) {
+    private fun goChatList(id: String, name: String) {
         val intent = Intent(this, ChatListActivity::class.java)
-        intent.putExtra("userId", userId)
-        intent.putExtra("userName", userName)
+        intent.putExtra("userId", id)
+        intent.putExtra("userName", name)
         startActivity(intent)
     }
 }

@@ -1,111 +1,76 @@
-    package com.example.assign09
+package com.example.assign09
 
-    import android.os.Bundle
-    import android.view.LayoutInflater
-    import android.view.ViewGroup
-    import androidx.appcompat.app.AppCompatActivity
-    import androidx.recyclerview.widget.LinearLayoutManager
-    import androidx.recyclerview.widget.RecyclerView
-    import com.google.firebase.database.DataSnapshot
-    import com.google.firebase.database.DatabaseError
-    import com.google.firebase.database.DatabaseReference
-    import com.google.firebase.database.ValueEventListener
-    import com.google.firebase.database.FirebaseDatabase
-    import com.example.assign09.databinding.ActivityChatRoomBinding
-    import com.example.assign09.databinding.ItemMsgListBinding
-    import com.example.assign09.model.Message
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.*
+import com.example.assign09.databinding.ActivityChatRoomBinding
+import com.example.assign09.model.Message
 
-    class ChatRoomActivity : AppCompatActivity() {
-        val binding by lazy { ActivityChatRoomBinding.inflate(layoutInflater)}
-        val database = FirebaseDatabase.getInstance("https://fir-chat1204-default-rtdb.firebaseio.com/")
-        lateinit var msgRef:DatabaseReference
+class ChatRoomActivity : AppCompatActivity() {
 
-        var roomId: String = ""
-        var roomTitle: String = ""
+    val binding by lazy { ActivityChatRoomBinding.inflate(layoutInflater) }
+    val database = FirebaseDatabase.getInstance("https://fir-chat1204-default-rtdb.firebaseio.com/")
+    lateinit var msgRef: DatabaseReference
 
-        val msgList = mutableListOf<Message>() // 파이어베이스에서 데이터를 불러온 후 저장할 변수
-        lateinit var adapter: MsgListAdapter
+    var roomId: String = ""
+    var roomTitle: String = ""
 
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            setContentView(binding.root)
-            // 인텐트로 전달된 방 정보와 사용자 정보 꺼내기
-            roomId = intent.getStringExtra("roomId") ?: "none"
-            roomTitle = intent.getStringExtra("roomTitle") ?: "없음"
+    val msgList = mutableListOf<Message>()
+    lateinit var adapter: MsgListAdapter
 
-            // 메시지 노드 레퍼런스 연결
-            msgRef = database.getReference("rooms").child(roomId).child("messages")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(binding.root)
 
-            // 아답터 생성하고 뷰와 연결
-            adapter = MsgListAdapter(msgList)
-            with(binding) {
-                recyclerMsgs.adapter = adapter
-                recyclerMsgs.layoutManager = LinearLayoutManager(baseContext)
+        roomId = intent.getStringExtra("roomId") ?: "none"
+        roomTitle = intent.getStringExtra("roomTitle") ?: "없음"
 
-                textTitle.setText(roomTitle)
-                btnBack.setOnClickListener { finish() }
-                btnSend.setOnClickListener { sendMsg() }
-            }
+        msgRef = database.getReference("rooms").child(roomId).child("messages")
 
-            loadMsgs()
-        }
-        // 메시지 목록 불러오기
-        fun loadMsgs() {
-            msgRef.addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    // 메시지 목록 삭제
-                    msgList.clear()
-                    for(item in snapshot.children) {
-                        item.getValue(Message::class.java)?.let { msg ->
-                            msgList.add(msg) // 메시지 목록에 추가
-                        }
+        adapter = MsgListAdapter(msgList)
+        binding.recyclerMsgs.adapter = adapter
+        binding.recyclerMsgs.layoutManager = LinearLayoutManager(this)
+
+        binding.textTitle.text = roomTitle
+        binding.btnBack.setOnClickListener { finish() }
+        binding.btnSend.setOnClickListener { sendMsg() }
+
+        loadMsgs()
+    }
+
+    fun loadMsgs() {
+        msgRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                msgList.clear()
+                for (item in snapshot.children) {
+                    item.getValue(Message::class.java)?.let { msg ->
+                        msgList.add(msg)
                     }
-                    // 아답터 갱신
-                    adapter.notifyDataSetChanged()
                 }
-
-                override fun onCancelled(error: DatabaseError) {
-                    print(error.message)
-                }
-            })
-        }
-        // 메시지 전송
-        fun sendMsg() {
-            with(binding) {
-                if(editMsg.text.isNotEmpty()) { // 입력 값이 있을 때만 처리
-                    val message = Message(editMsg.text.toString(), ChatListActivity.userName)
-                    val msgId = msgRef.push().key!!
-                    message.id = msgId
-                    msgRef.child(msgId).setValue(message)
-                    // 메시지 전송 후 입력필드 삭제
-                    editMsg.setText("")
-                }
+                adapter.notifyDataSetChanged()
             }
-        }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
     }
-    // 목록 아답터
-    class MsgListAdapter(val msgList:MutableList<Message>)
-        : RecyclerView.Adapter<MsgListAdapter.Holder>() {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-            val binding = ItemMsgListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return Holder(binding)
+    fun sendMsg() {
+        val text = binding.editMsg.text.toString()
+        if (text.isEmpty()) return
+
+        val message = Message(text, ChatListActivity.userName)
+        val msgId = msgRef.push().key!!
+        message.id = msgId
+
+        msgRef.child(msgId).setValue(message)
+
+        val roomRef = database.getReference("rooms").child(roomId)
+        roomRef.child("messageCount").get().addOnSuccessListener {
+            val count = it.getValue(Long::class.java) ?: 0L
+            roomRef.child("messageCount").setValue(count + 1)
         }
 
-        override fun onBindViewHolder(holder: Holder, position: Int) {
-            val msg = msgList.get(position)
-            holder.setMsg(msg)
-        }
-
-        override fun getItemCount(): Int {
-            return msgList.size
-        }
-
-        class Holder(val binding: ItemMsgListBinding): RecyclerView.ViewHolder(binding.root) {
-            fun setMsg(msg:Message) {
-                binding.textName.setText(msg.userName)
-                binding.textMsg.setText(msg.msg)
-                binding.textDate.setText("${msg.timestamp}")
-            }
-        }
+        binding.editMsg.setText("")
     }
+}

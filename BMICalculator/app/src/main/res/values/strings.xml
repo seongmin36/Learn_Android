@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">BMICalculator</string>
-    <string name="name">성명 : 조성민</string>
-    <string name="school_num">학번 : 2021305077</string>
-    <string name="phone_num">전화번호 : 010–5379–2360</string>
-    <string name="plus">+</string>
-    <string name="minus">-</string>
-</resources>
